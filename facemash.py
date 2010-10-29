@@ -55,7 +55,7 @@ def handle(env, start_response):
     start_response('200 OK', [('Content-Type', 'text/html')])
     return [str(html % {'name1': face1.name, 'name2': face2.name, 'pic1': face1.name, 'pic2': face2.name, 'rank1': face1.get_rank(), 'rank2': face2.get_rank()})]
 
-html = open('html.t', 'r').read()
+html = open('t.html', 'r').read()
 conn = sqlite3.connect('facemash.db')
 
 gevent.wsgi.WSGIServer(('localhost', 8088), handle, log=None).serve_forever()
