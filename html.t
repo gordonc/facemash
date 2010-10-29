@@ -5,6 +5,7 @@
       body { font-family:sans-serif; }
       td { text-align:center; }
       td.pic { background-color:#b0c4de; }
+      td.pic:hover { background-color:#4682b4; }
     </style>
   </head>
   <body>
