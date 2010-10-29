@@ -1,0 +1,20 @@
+facemash website from "the social network"
+
+rating algorithm:
+http://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details
+still need to tweak constants
+
+server:
+python gevent
+
+storage:
+sqlite3
+RDBMS for simple ranking and random selection
+
+setup:
+insert (name,rating) tuples into facemash.db where name is the link to the face image and use 0 as the initial rating
+
+% ./create.sh
+% for name in `cat pics.txt`; do sqlite3 facemash.db "insert into face (name,rating) values ('$name',0)"; done
+% python facemash.py
+
