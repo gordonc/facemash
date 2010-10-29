@@ -12,9 +12,9 @@ sqlite3
 RDBMS for simple ranking and random selection
 
 setup:
-insert (name,rating) tuples into facemash.db where name is the link to the face image and use 0 as the initial rating
+insert (name,rating) tuples into facemash.db where name is the link to the face image and use 1000 as the initial rating
 
 % ./create.sh
-% for name in `cat pics.txt`; do sqlite3 facemash.db "insert into face (name,rating) values ('$name',0)"; done
+% for name in `cat pics.txt`; do sqlite3 facemash.db "insert into face (name,rating) values ('$name',1000)"; done
 % python facemash.py
 

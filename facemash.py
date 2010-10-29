@@ -12,7 +12,7 @@ class Face:
         self.rating = res[0]
 
     def update_rating(self, score, opponent):
-        K0 = 10
+        K0 = 15
         Q0 = 10 ** (float(self.rating)/400)
         Q1 = 10 ** (float(opponent.rating)/400)
         E0 = Q0 / (Q0 + Q1)
@@ -35,7 +35,6 @@ class Face:
         res = cur.fetchone()
         return Face(res[0])
 
-
 def handle(env, start_response):
     if env.has_key('CONTENT_LENGTH') and env.has_key('wsgi.input'):
         length = int(env['CONTENT_LENGTH'])
@@ -49,7 +48,7 @@ def handle(env, start_response):
 
         face1.update_rating(score1, face2)
         face2.update_rating(score2, face1)
- 
+
     face1 = Face.random()
     face2 = Face.random()
 
