@@ -1,7 +1,7 @@
 import urlparse
 import sqlite3
 import StringIO
-import gevent.wsgi
+import wsgiref.simple_server
 
 class Face:
     def __init__(self, name):
@@ -58,7 +58,7 @@ def handle(env, start_response):
 html = open('t.html', 'r').read()
 conn = sqlite3.connect('facemash.db')
 
-gevent.wsgi.WSGIServer(('localhost', 8088), handle, log=None).serve_forever()
+wsgiref.simple_server.make_server('localhost', 8000, handle).serve_forever()
 
 conn.close()
 
