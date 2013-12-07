@@ -4,17 +4,13 @@ rating algorithm:
 http://en.wikipedia.org/wiki/Elo_rating_system#Mathematical_details
 still need to tweak constants
 
-server:
-python gevent
-
-storage:
+dependencies:
+python
 sqlite3
-RDBMS for simple ranking and random selection
 
 setup:
-insert (name,rating) tuples into facemash.db where name is the link to the face image and use 1000 as the initial rating
-
-% ./create.sh
-% for name in `cat pics.txt`; do sqlite3 facemash.db "insert into face (name,rating) values ('$name',1000)"; done
+% sh insert.sh http://s3.amazonaws.com/crunchbase_prod_assets/assets/images/resized/0001/0688/10688v39-max-250x250.jpg
+% sh insert.sh https://github-images.s3.amazonaws.com/blog/2011/hubot.png
+% ...
 % python facemash.py
 
