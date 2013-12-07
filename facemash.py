@@ -8,8 +8,8 @@ class Face:
         self.name = name
         cur = conn.cursor()
         cur.execute('SELECT rating FROM face where name = ?', (self.name,))
-        res = cur.fetchone()
-        self.rating = res[0]
+        row = cur.fetchone()
+        self.rating = row[0]
 
     def update_rating(self, score, opponent):
         K0 = 15
@@ -25,15 +25,15 @@ class Face:
     def get_rank(self):
         cur = conn.cursor()
         cur.execute('SELECT count(*)+1 FROM face where rating > ?', (self.rating,))
-        res = cur.fetchone()
-        return res[0]
+        row = cur.fetchone()
+        return row[0]
 
     @classmethod
-    def random(cls):
+    def random(cls, n):
         cur = conn.cursor()
-        cur.execute('SELECT name FROM face ORDER BY RANDOM() LIMIT 1;')
-        res = cur.fetchone()
-        return Face(res[0])
+        cur.execute('SELECT name FROM face ORDER BY RANDOM() LIMIT ?;', (n,))
+        rows = cur.fetchall()
+        return [Face(row[0]) for row in rows]
 
 def handle(env, start_response):
     if env.has_key('CONTENT_LENGTH') and env['CONTENT_LENGTH'] and env.has_key('wsgi.input'):
@@ -49,8 +49,7 @@ def handle(env, start_response):
         face1.update_rating(score1, face2)
         face2.update_rating(score2, face1)
 
-    face1 = Face.random()
-    face2 = Face.random()
+    face1,face2 = Face.random(2)
 
     start_response('200 OK', [('Content-Type', 'text/html')])
     return [str(html % {'name1': face1.name, 'name2': face2.name, 'pic1': face1.name, 'pic2': face2.name, 'rank1': face1.get_rank(), 'rank2': face2.get_rank()})]
