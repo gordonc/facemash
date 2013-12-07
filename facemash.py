@@ -1,6 +1,7 @@
 import urlparse
 import sqlite3
 import StringIO
+import sys
 import wsgiref.simple_server
 
 class Face:
@@ -57,7 +58,15 @@ def handle(env, start_response):
 html = open('t.html', 'r').read()
 conn = sqlite3.connect('facemash.db')
 
-wsgiref.simple_server.make_server('localhost', 8000, handle).serve_forever()
+if sys.argv[1:]:
+    port = int(sys.argv[1])
+else:
+    port = 8000
+
+httpd = wsgiref.simple_server.make_server('', port, handle)
+sa = httpd.socket.getsockname() 
+print "Serving HTTP on", sa[0], "port", sa[1], "..."
+httpd.serve_forever()
 
 conn.close()
 
