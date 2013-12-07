@@ -36,7 +36,7 @@ class Face:
         return Face(res[0])
 
 def handle(env, start_response):
-    if env.has_key('CONTENT_LENGTH') and env.has_key('wsgi.input'):
+    if env.has_key('CONTENT_LENGTH') and env['CONTENT_LENGTH'] and env.has_key('wsgi.input'):
         length = int(env['CONTENT_LENGTH'])
         query = StringIO.StringIO(env['wsgi.input'].read(length)).getvalue()
         data = urlparse.parse_qs(query)
