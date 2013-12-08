@@ -42,13 +42,11 @@ def handle(env, start_response):
         query = StringIO.StringIO(env['wsgi.input'].read(length)).getvalue()
         data = urlparse.parse_qs(query)
 
-        face1 = Face(data['url1'][0])
-        face2 = Face(data['url2'][0])
-        score1 = 1 if data['winner'][0] == 'face1' else 0
-        score2 = 1 if data['winner'][0] == 'face2' else 0
+        winner = Face(data['winner'][0])
+        loser = Face(data['loser'][0])
 
-        face1.update_rating(score1, face2)
-        face2.update_rating(score2, face1)
+        winner.update_rating(1, loser)
+        loser.update_rating(0, winner)
 
     face1,face2 = Face.random(2)
 

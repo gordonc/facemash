@@ -13,18 +13,16 @@
       <tr>
         <td class="image">
           <form action="" method="post">
-            <input type="hidden" name="url1" value="%(url1)s"/>
-            <input type="hidden" name="url2" value="%(url2)s"/>
-            <input type="hidden" name="winner" value="face1"/>
+            <input type="hidden" name="winner" value="%(url1)s"/>
+            <input type="hidden" name="loser" value="%(url2)s"/>
             <input type="image" src="%(url1)s"/>
           </form>
         </td>
         <td rowspan="2"><h3>V</h3></td>
         <td class="image">
           <form action="" method="post">
-            <input type="hidden" name="url1" value="%(url1)s"/>
-            <input type="hidden" name="url2" value="%(url2)s"/>
-            <input type="hidden" name="winner" value="face2"/>
+            <input type="hidden" name="winner" value="%(url2)s"/>
+            <input type="hidden" name="loser" value="%(url1)s"/>
             <input type="image" src="%(url2)s"/>
           </form>
         </td>
