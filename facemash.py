@@ -5,10 +5,10 @@ import sys
 import wsgiref.simple_server
 
 class Face:
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, url):
+        self.url = url
         cur = conn.cursor()
-        cur.execute('SELECT rating FROM face where name = ?', (self.name,))
+        cur.execute('SELECT rating FROM face where url = ?', (self.url,))
         row = cur.fetchone()
         self.rating = row[0]
 
@@ -20,7 +20,7 @@ class Face:
         self.rating += (K0 * (score - E0))
 
         cur = conn.cursor()
-        cur.execute('UPDATE face SET rating=? WHERE name=?', (self.rating,self.name))
+        cur.execute('UPDATE face SET rating=? WHERE url=?', (self.rating, self.url))
         conn.commit()
 
     def get_rank(self):
@@ -32,7 +32,7 @@ class Face:
     @classmethod
     def random(cls, n):
         cur = conn.cursor()
-        cur.execute('SELECT name FROM face ORDER BY RANDOM() LIMIT ?;', (n,))
+        cur.execute('SELECT url FROM face ORDER BY RANDOM() LIMIT ?;', (n,))
         rows = cur.fetchall()
         return [Face(row[0]) for row in rows]
 
@@ -42,8 +42,8 @@ def handle(env, start_response):
         query = StringIO.StringIO(env['wsgi.input'].read(length)).getvalue()
         data = urlparse.parse_qs(query)
 
-        face1 = Face(data['name1'][0])
-        face2 = Face(data['name2'][0])
+        face1 = Face(data['url1'][0])
+        face2 = Face(data['url2'][0])
         score1 = 1 if data['winner'][0] == 'face1' else 0
         score2 = 1 if data['winner'][0] == 'face2' else 0
 
@@ -53,9 +53,9 @@ def handle(env, start_response):
     face1,face2 = Face.random(2)
 
     start_response('200 OK', [('Content-Type', 'text/html')])
-    return [str(html % {'name1': face1.name, 'name2': face2.name, 'pic1': face1.name, 'pic2': face2.name, 'rank1': face1.get_rank(), 'rank2': face2.get_rank()})]
+    return [str(html % {'url1': face1.url, 'url2': face2.url, 'rank1': face1.get_rank(), 'rank2': face2.get_rank()})]
 
-html = open('t.html', 'r').read()
+html = open('template.html', 'r').read()
 conn = sqlite3.connect('facemash.db')
 
 if sys.argv[1:]:
